@@ -19,33 +19,45 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path
 
   return (
-    <nav className="bg-pesitm-blue text-white sticky top-0 z-50 shadow-lg">
-      <div className="container-custom">
+    <>
+      {/* Header Section Above Navbar */}
+      <div className="bg-white border-b sticky top-0 z-50">
+        <div className="w-full py-2">
+          <a 
+            href="https://pestrust.edu.in/pesitm/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="block hover:opacity-90 transition-opacity"
+          >
+            <img 
+              src="/PESITM.jpg" 
+              alt="PES Institute of Technology & Management" 
+              className="w-full h-20 object-contain"
+            />
+          </a>
+        </div>
+      </div>
+
+      {/* Navigation Bar */}
+      <nav className="bg-pesitm-blue text-white border-b sticky top-20 z-40">
+        <div className="container-custom">
         <div className="flex items-center justify-between h-20">
           {/* Logo and Title */}
           <Link to="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-pesitm-gold rounded-full flex items-center justify-center">
-              <span className="text-pesitm-blue font-bold text-xl">P</span>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold leading-tight">PESITM</h1>
-              <p className="text-xs text-gray-300">CSE Department</p>
-            </div>
+            <img src="/Navbar.jpg" alt="PESITM - Education for the real world" className="h-16 object-contain" />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-1">
+          <div className="hidden md:flex flex-1 justify-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                  isActive(link.path)
-                    ? 'bg-pesitm-gold text-pesitm-blue'
-                    : 'hover:bg-blue-800'
-                }`}
+                className="px-3 py-2 text-sm font-bold transition-all duration-300 relative group text-white hover:text-red-500"
               >
                 {link.name}
+                {/* Underline effect - only on hover */}
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 transform transition-all duration-300 scale-x-0 group-hover:scale-x-100"></span>
               </Link>
             ))}
           </div>
@@ -53,7 +65,8 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-md hover:bg-blue-800"
+            className="md:hidden p-2 rounded-md hover:bg-white/10"
+            aria-label="Toggle menu"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -62,17 +75,17 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden bg-blue-800">
+        <div className="md:hidden bg-pesitm-blue border-t border-white/20">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-3 py-2 rounded-md text-base font-bold transition-all duration-300 ${
                   isActive(link.path)
-                    ? 'bg-pesitm-gold text-pesitm-blue'
-                    : 'hover:bg-blue-700'
+                    ? 'border-l-4 border-white text-white bg-white/10'
+                    : 'text-white hover:text-red-500 hover:bg-white/10 hover:translate-x-2'
                 }`}
               >
                 {link.name}
@@ -82,6 +95,7 @@ const Navbar = () => {
         </div>
       )}
     </nav>
+    </>
   )
 }
 

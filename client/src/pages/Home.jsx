@@ -31,8 +31,8 @@ const Home = () => {
 
   return (
     <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-pesitm-blue to-blue-900 text-white py-20 md:py-32">
+  {/* Hero Section */}
+  <section className="relative bg-white text-pesitm-blue py-20 md:py-32">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -46,14 +46,14 @@ const Home = () => {
               <p className="text-xl md:text-2xl mb-4 text-pesitm-gold font-semibold">
                 Innovate. Code. Transform.
               </p>
-              <p className="text-lg mb-8 text-gray-200">
+              <p className="text-lg mb-8 text-gray-700">
                 PES Institute of Technology and Management, Shivamogga
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/about" className="btn-secondary">
                   Learn More <ArrowRight className="inline ml-2" size={20} />
                 </Link>
-                <Link to="/contact" className="px-6 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-pesitm-blue transition">
+                <Link to="/contact" className="px-6 py-3 border-2 border-pesitm-blue text-pesitm-blue font-semibold rounded-lg hover:bg-pesitm-blue hover:text-white transition">
                   Contact Us
                 </Link>
               </div>
@@ -65,7 +65,7 @@ const Home = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="hidden md:block"
             >
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+              <div className="bg-white rounded-2xl p-8 shadow-sm">
                 <img 
                   src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800" 
                   alt="Computer Science" 
@@ -165,13 +165,13 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-pesitm-blue text-white">
+      <section className="py-16 bg-white text-pesitm-blue">
         <div className="container-custom text-center">
           <AnimatedSection>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Ready to Start Your Journey?
             </h2>
-            <p className="text-xl mb-8 text-gray-200">
+            <p className="text-xl mb-8 text-gray-700">
               Join the CSE Department at PESITM and shape your future in technology
             </p>
             <Link to="/contact" className="btn-secondary">

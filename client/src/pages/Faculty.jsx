@@ -29,57 +29,138 @@ const Faculty = () => {
   const placeholderFaculty = [
     {
       _id: '1',
-      name: 'Dr. Arjun U',
-      designation: 'Professor & HOD',
-      specialization: 'Machine Learning, Data Mining',
-      email: 'arjun.u@pestrust.edu.in',
+      name: 'Dr. Prasanna Kumar H R',
+      designation: 'Professor and Head',
+      specialization: 'Computer Science & Engineering',
+      email: 'prasannakumar@pestrust.edu.in',
       image: 'https://via.placeholder.com/150',
-      bio: 'Expert in Machine Learning and Data Analytics'
+      bio: 'Head of Department with expertise in Computer Science'
     },
     {
       _id: '2',
-      name: 'Dr. Priya Sharma',
-      designation: 'Associate Professor',
-      specialization: 'Artificial Intelligence, Neural Networks',
-      email: 'priya.sharma@pestrust.edu.in',
+      name: 'Dr. Manu A P',
+      designation: 'Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'manu.ap@pestrust.edu.in',
       image: 'https://via.placeholder.com/150',
-      bio: 'Research focus on AI and Deep Learning'
+      bio: 'Experienced Professor in Computer Science'
     },
     {
       _id: '3',
-      name: 'Prof. Rajesh Kumar',
-      designation: 'Assistant Professor',
-      specialization: 'Cybersecurity, Network Security',
-      email: 'rajesh.kumar@pestrust.edu.in',
+      name: 'Dr. Chethan L S',
+      designation: 'Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'chethan.ls@pestrust.edu.in',
       image: 'https://via.placeholder.com/150',
-      bio: 'Specialist in Cybersecurity and Ethical Hacking'
+      bio: 'Professor specializing in Computer Science'
     },
     {
       _id: '4',
-      name: 'Dr. Anita Desai',
-      designation: 'Associate Professor',
-      specialization: 'Cloud Computing, IoT',
-      email: 'anita.desai@pestrust.edu.in',
+      name: 'Mr. Raghavendra K',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'raghavendra.k@pestrust.edu.in',
       image: 'https://via.placeholder.com/150',
-      bio: 'Expert in Cloud Technologies and IoT Systems'
+      bio: 'Assistant Professor in Computer Science'
     },
     {
       _id: '5',
-      name: 'Prof. Vikram Singh',
+      name: 'Mrs. Prathibha S',
       designation: 'Assistant Professor',
-      specialization: 'Software Engineering, Web Development',
-      email: 'vikram.singh@pestrust.edu.in',
+      specialization: 'Computer Science & Engineering',
+      email: 'prathibha.s@pestrust.edu.in',
       image: 'https://via.placeholder.com/150',
-      bio: 'Passionate about Software Development and Agile'
+      bio: 'Assistant Professor with focus on CSE'
     },
     {
       _id: '6',
-      name: 'Dr. Meena Patel',
-      designation: 'Associate Professor',
-      specialization: 'Database Systems, Big Data',
-      email: 'meena.patel@pestrust.edu.in',
+      name: 'Dr. Sunilkumar H R',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'sunilkumar.hr@pestrust.edu.in',
       image: 'https://via.placeholder.com/150',
-      bio: 'Research in Big Data Analytics and NoSQL'
+      bio: 'Assistant Professor in Computer Science'
+    },
+    {
+      _id: '7',
+      name: 'Mr. Rajesh T H',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'rajesh.th@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor specializing in CSE'
+    },
+    {
+      _id: '8',
+      name: 'Ms. Suchitra H L',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'suchitra.hl@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor in Computer Science'
+    },
+    {
+      _id: '9',
+      name: 'Mrs. Suchitha H S',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'suchitha.hs@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor in Computer Science'
+    },
+    {
+      _id: '10',
+      name: 'Ms. Vinutha H M',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'vinutha.hm@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor in Computer Science'
+    },
+    {
+      _id: '11',
+      name: 'Mr. Sandeep. K.H',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'sandeep.kh@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor in Computer Science'
+    },
+    {
+      _id: '12',
+      name: 'Ms. Madhu D.',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'madhu.d@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor in Computer Science'
+    },
+    {
+      _id: '13',
+      name: 'Mr. Chethan P J',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'chethan.pj@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor in Computer Science'
+    },
+    {
+      _id: '14',
+      name: 'Ms. Gagana G R',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'gagana.gr@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor in Computer Science'
+    },
+    {
+      _id: '15',
+      name: 'Mr. Shivanand C. Maradi',
+      designation: 'Assistant Professor',
+      specialization: 'Computer Science & Engineering',
+      email: 'shivanand.maradi@pestrust.edu.in',
+      image: 'https://via.placeholder.com/150',
+      bio: 'Assistant Professor in Computer Science'
     },
   ]
 
