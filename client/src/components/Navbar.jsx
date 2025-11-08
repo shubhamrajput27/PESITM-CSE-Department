@@ -1,10 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, ChevronDown } from 'lucide-react'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isSticky, setIsSticky] = useState(false)
   const location = useLocation()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Make navbar sticky after scrolling past 100px (height of header)
+      setIsSticky(window.scrollY > 100)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -20,8 +31,8 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Header Section Above Navbar */}
-      <div className="bg-white border-b sticky top-0 z-50">
+      {/* Header Section Above Navbar - Scrolls normally */}
+      <div className="bg-white border-b">
         <div className="w-full py-2">
           <a 
             href="https://pestrust.edu.in/pesitm/" 
@@ -38,8 +49,10 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Navigation Bar */}
-      <nav className="bg-pesitm-blue text-white border-b sticky top-20 z-40">
+      {/* Navigation Bar - Becomes sticky when scrolling */}
+      <nav className={`bg-pesitm-blue text-white border-b transition-all duration-300 ${
+        isSticky ? 'fixed top-0 left-0 right-0 shadow-lg z-50' : 'relative z-40'
+      }`}>
         <div className="container-custom">
         <div className="flex items-center justify-between h-20">
           {/* Logo and Title */}
@@ -77,19 +90,36 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="md:hidden bg-pesitm-blue border-t border-white/20">
-          <div className="px-2 pt-2 pb-3 space-y-1">
+      {/* Mobile Navigation - Slide-in Drawer */}
+      <div 
+        className={`md:hidden fixed inset-y-0 right-0 transform transition-transform duration-300 ease-in-out bg-pesitm-blue w-64 shadow-2xl ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        } z-50`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Close button */}
+          <div className="flex justify-between items-center p-4 border-b border-white/20">
+            <span className="text-lg font-bold text-white">Menu</span>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 rounded-md hover:bg-white/10"
+              aria-label="Close menu"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="px-4 py-4 space-y-2 overflow-y-auto">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-bold transition-all duration-300 ${
+                className={`block px-4 py-3 rounded-lg text-base font-bold transition-all duration-300 ${
                   isActive(link.path)
-                    ? 'border-l-4 border-white text-white bg-white/10'
-                    : 'text-white hover:text-red-500 hover:bg-white/10 hover:translate-x-2'
+                    ? 'bg-white/20 text-red-500 border-l-4 border-red-500'
+                    : 'text-white hover:bg-white/10 hover:text-red-500'
                 }`}
               >
                 {link.name}
@@ -97,8 +127,19 @@ const Navbar = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Overlay for mobile menu */}
+      {isOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
       )}
     </nav>
+
+    {/* Spacer to prevent content jump when navbar becomes fixed */}
+    {isSticky && <div className="h-20" />}
     </>
   )
 }
