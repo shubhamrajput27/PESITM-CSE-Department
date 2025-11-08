@@ -56,8 +56,8 @@ const Navbar = () => {
         <div className="container-custom">
         <div className="flex items-center justify-between h-20">
           {/* Logo and Title */}
-          <Link to="/" className="flex items-center space-x-3">
-            <img src="/Navbar.jpg" alt="PESITM - Education for the real world" className="h-16 object-contain" />
+          <Link to="/" className="flex items-center bg-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <img src="/Navbar.jpg" alt="PESITM - Education for the real world" className="h-14 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -116,10 +116,10 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`block px-4 py-3 rounded-lg text-base font-bold transition-all duration-300 ${
+                className={`block px-4 py-3 rounded-lg text-base font-bold transition-all duration-300 transform ${
                   isActive(link.path)
-                    ? 'bg-white/20 text-red-500 border-l-4 border-red-500'
-                    : 'text-white hover:bg-white/10 hover:text-red-500'
+                    ? 'bg-white/20 text-red-500 border-l-4 border-red-500 scale-105'
+                    : 'text-white hover:bg-white/15 hover:text-red-500 hover:translate-x-2 hover:border-l-4 hover:border-red-500 hover:shadow-lg'
                 }`}
               >
                 {link.name}
