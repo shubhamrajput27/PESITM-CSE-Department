@@ -29,20 +29,24 @@ const About = () => {
           <AnimatedSection>
             <div className="prose max-w-none">
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                The Department of Computer Science & Engineering at PES Institute of Technology 
-                and Management, Shivamogga, was established with the vision of providing quality 
-                education in computing and preparing students for successful careers in the IT industry 
-                and research.
+                The Department of Computer Science & Engineering was established in 2007 and aimed to fulfil 
+                the demands of the software industry. The department offers high-quality technical education 
+                to its students with the help of its state-of-the-art computing facilities and by keeping pace 
+                with the latest technological developments.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Our department is committed to fostering innovation, critical thinking, and problem-solving 
-                skills among students. With state-of-the-art infrastructure, experienced faculty, and 
-                industry collaborations, we provide a holistic learning environment that bridges the gap 
-                between academic knowledge and industry requirements.
+                Computer Science and Engineering course integrates principles from computer science, covering 
+                programming, data structures, algorithms, computer architecture, and software development. It 
+                also includes advanced topics like AI, cybersecurity, and networking, preparing students for 
+                diverse careers in technology.
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                The students undergo in-house training, which includes advanced, skill enhancement and industrial 
+                training, bridging the gap between industry and academia.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                The department is affiliated to <strong>Visvesvaraya Technological University (VTU), Belagavi</strong>, 
-                and offers undergraduate programs in Computer Science & Engineering.
+                The Computer Science & Engineering program is accredited by the National Board of Accreditation (NBA) 
+                for three years from 2024 to 2027.
               </p>
             </div>
           </AnimatedSection>
@@ -104,24 +108,35 @@ const About = () => {
         </div>
       </section>
 
-      {/* Program Outcomes */}
+      {/* Salient Features */}
       <section className="py-16">
         <div className="container-custom">
           <AnimatedSection>
-            <h2 className="section-heading text-center mb-12">Program Outcomes</h2>
+            <h2 className="section-heading text-center mb-12">Salient Features</h2>
           </AnimatedSection>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {programOutcomes.map((outcome, index) => (
-              <AnimatedSection key={index} delay={index * 0.1}>
-                <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
-                  <div className="flex-shrink-0 w-8 h-8 bg-pesitm-blue text-white rounded-full flex items-center justify-center font-bold">
-                    {index + 1}
-                  </div>
-                  <p className="text-gray-700 pt-1">{outcome}</p>
-                </div>
-              </AnimatedSection>
-            ))}
+          <div className="max-w-4xl mx-auto space-y-4">
+            <AnimatedSection>
+              <div className="prose max-w-none">
+                <ul className="list-disc space-y-4 text-lg text-gray-700">
+                  <li>
+                    Equipped with advanced infrastructure and computing facilities to support practical learning, 
+                    including laboratories that enhance students' practical expertise.
+                  </li>
+                  <li>
+                    Industry Collaboration: MoUs with Haegl Technologies and Sulonya Technologies have led to 
+                    the establishment of a Centre of Excellence in Data Science on campus, along with regular 
+                    technical talks and workshops.
+                  </li>
+                  <li>
+                    Regular workshops and short-term training programs (STTPs) are conducted.
+                  </li>
+                  <li>
+                    Active interaction between students and professors enriches the educational experience.
+                  </li>
+                </ul>
+              </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
