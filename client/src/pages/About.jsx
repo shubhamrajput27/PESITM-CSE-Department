@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import AnimatedSection from '../components/AnimatedSection'
-import { Target, Eye, Award } from 'lucide-react'
+import { Target, Eye, Award, X } from 'lucide-react'
 
 const About = () => {
+  const [showHODModal, setShowHODModal] = useState(false)
+  
   const programOutcomes = [
     'Apply knowledge of mathematics, science, and engineering',
     'Design and conduct experiments, analyze and interpret data',
@@ -10,6 +13,25 @@ const About = () => {
     'Identify, formulate, and solve engineering problems',
     'Understand professional and ethical responsibility',
   ]
+  
+  const hodMessage = `Dear Students,
+
+Welcome to the Department of Computer Science & Engineering at PESITM!
+
+It gives me immense pleasure to lead a department that has been at the forefront of technological innovation and academic excellence since its inception in 2007. Our mission is not just to impart knowledge but to nurture future leaders who will shape the digital world.
+
+The field of Computer Science is evolving at an unprecedented pace. From Artificial Intelligence and Machine Learning to Cybersecurity and Cloud Computing, the opportunities are boundless. Our curriculum is designed to keep pace with these advancements while building strong fundamentals that will serve you throughout your career.
+
+I encourage each one of you to make the most of the state-of-the-art facilities, experienced faculty, and industry collaborations we offer. Participate actively in research projects, coding competitions, and technical workshops. Remember, your success is our success.
+
+As you embark on this exciting journey, always stay curious, embrace challenges, and never stop learning. The future belongs to those who innovate and adapt.
+
+Wishing you all the very best in your academic pursuits!
+
+Warm regards,
+Dr. Prasanna Kumar H R
+Professor & Head of Department
+Computer Science & Engineering`
 
   return (
     <div className="bg-white">
@@ -150,7 +172,10 @@ const About = () => {
 
           <div className="max-w-3xl mx-auto">
             <AnimatedSection>
-              <div className="card bg-white flex flex-col md:flex-row items-center gap-8">
+              <div 
+                className="card bg-white flex flex-col md:flex-row items-center gap-8 cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                onClick={() => setShowHODModal(true)}
+              >
                 <div className="w-48 h-48 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden">
                   <img 
                     src="/hod.jpg" 
@@ -166,12 +191,71 @@ const About = () => {
                     Under his leadership, the department has achieved significant milestones in academic 
                     excellence, research publications, and industry collaborations.
                   </p>
+                  <p className="text-sm text-pesitm-blue font-semibold mt-4">Click to read message from HOD →</p>
                 </div>
               </div>
             </AnimatedSection>
           </div>
         </div>
       </section>
+
+      {/* HOD Message Modal */}
+      {showHODModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowHODModal(false)}
+        >
+          <div 
+            className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 bg-gradient-to-r from-pesitm-blue to-blue-900 text-white p-6 rounded-t-lg flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold">Message from HOD</h2>
+                <p className="text-sm text-gray-200 mt-1">Dr. Prasanna Kumar H R</p>
+              </div>
+              <button 
+                onClick={() => setShowHODModal(false)}
+                className="p-2 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6 md:p-8">
+              <div className="flex flex-col md:flex-row gap-6 mb-6">
+                <div className="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden mx-auto md:mx-0">
+                  <img 
+                    src="/hod.jpg" 
+                    alt="Dr. Prasanna Kumar H R" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-pesitm-blue mb-1">Dr. Prasanna Kumar H R</h3>
+                  <p className="text-gray-600 mb-2">Professor & Head of Department</p>
+                  <p className="text-sm text-gray-500">Computer Science & Engineering</p>
+                </div>
+              </div>
+              
+              <div className="prose max-w-none">
+                <div className="text-gray-700 leading-relaxed whitespace-pre-line">
+                  {hodMessage}
+                </div>
+              </div>
+              
+              <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
+                <button
+                  onClick={() => setShowHODModal(false)}
+                  className="btn-primary"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
