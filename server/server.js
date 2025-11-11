@@ -1,13 +1,17 @@
 import express from 'express'
-import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import { testConnection } from './config/database.js'
 
 // Import routes
-import facultyRoutes from './routes/facultyRoutes.js'
-import eventsRoutes from './routes/eventsRoutes.js'
-import researchRoutes from './routes/researchRoutes.js'
-import contactRoutes from './routes/contactRoutes.js'
+// MongoDB-based routes (temporarily disabled)
+// import facultyRoutes from './routes/facultyRoutes.js'
+// import eventsRoutes from './routes/eventsRoutes.js'
+// import researchRoutes from './routes/researchRoutes.js'
+// import contactRoutes from './routes/contactRoutes.js'
+
+// PostgreSQL-based routes (active)
+import adminAuthRoutes from './routes/adminAuthPostgresRoutes.js'
 
 // Load environment variables
 dotenv.config()
@@ -20,38 +24,36 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// Database connection
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pesitm-cse', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    console.log('✅ MongoDB Connected Successfully')
-  } catch (error) {
-    console.error('❌ MongoDB Connection Error:', error.message)
-    process.exit(1)
-  }
+// Database connections
+const connectDatabases = async () => {
+  // PostgreSQL connection test
+  await testConnection()
 }
 
-connectDB()
+connectDatabases()
 
 // Routes
-app.use('/api/faculty', facultyRoutes)
-app.use('/api/events', eventsRoutes)
-app.use('/api/research', researchRoutes)
-app.use('/api/contact', contactRoutes)
+// MongoDB-based routes (temporarily disabled)
+// app.use('/api/faculty', facultyRoutes)
+// app.use('/api/events', eventsRoutes)
+// app.use('/api/research', researchRoutes)
+// app.use('/api/contact', contactRoutes)
+
+// PostgreSQL-based routes (active)
+app.use('/api/admin', adminAuthRoutes)
 
 // Root route
 app.get('/', (req, res) => {
   res.json({
     message: 'PESITM CSE Department API',
     version: '1.0.0',
-    endpoints: {
-      faculty: '/api/faculty',
-      events: '/api/events',
-      research: '/api/research',
-      contact: '/api/contact'
+    status: 'running',
+    database: 'PostgreSQL',
+    activeEndpoints: {
+      admin: '/api/admin'
+    },
+    disabledEndpoints: {
+      note: 'Faculty, Events, Research, Contact endpoints temporarily disabled during PostgreSQL migration'
     }
   })
 })

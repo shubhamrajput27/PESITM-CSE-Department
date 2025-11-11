@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Lock, User, Eye, EyeOff, Shield } from 'lucide-react'
 import AnimatedSection from '../components/AnimatedSection'
 import { motion } from 'framer-motion'
+import axios from 'axios'
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -27,48 +28,46 @@ const AdminLogin = () => {
     setError('')
 
     try {
-      // Simulate API delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Real API call to PostgreSQL backend
+      const response = await axios.post('/api/admin/login', {
+        username: formData.username,
+        password: formData.password
+      })
       
-      // Frontend-only dummy credentials validation
-      const dummyCredentials = [
-        { username: 'admin', password: 'admin123', fullName: 'System Administrator', role: 'super_admin' },
-        { username: 'hod', password: 'hod123', fullName: 'Dr. Rajesh Kumar (HOD)', role: 'admin' },
-        { username: 'faculty', password: 'faculty123', fullName: 'Prof. Priya Sharma', role: 'moderator' },
-        { username: 'coordinator', password: 'coord123', fullName: 'Dr. Amit Verma', role: 'admin' },
-        { username: 'assistant', password: 'assist123', fullName: 'Ms. Kavya Reddy', role: 'moderator' }
-      ]
-      
-      const validUser = dummyCredentials.find(
-        cred => cred.username === formData.username && cred.password === formData.password
-      )
-      
-      if (validUser) {
-        // Store dummy token and user data
-        const dummyToken = `dummy_jwt_${validUser.username}_${Date.now()}`
-        const dummyUser = {
-          id: `dummy_${validUser.username}`,
-          username: validUser.username,
-          email: `${validUser.username}@pesitm.edu.in`,
-          fullName: validUser.fullName,
-          role: validUser.role,
-          lastLoginAt: new Date().toISOString()
-        }
+      if (response.data.success) {
+        // Store JWT token and user data in localStorage
+        localStorage.setItem('adminToken', response.data.data.token)
+        localStorage.setItem('adminUser', JSON.stringify(response.data.data.admin))
         
-        localStorage.setItem('adminToken', dummyToken)
-        localStorage.setItem('adminUser', JSON.stringify(dummyUser))
+        const admin = response.data.data.admin
+        alert(`✅ Login Successful!\n\nWelcome ${admin.full_name}\n🎭 Role: ${admin.role}\n📧 Email: ${admin.email}\n\n🔒 Secure PostgreSQL Authentication`)
         
-        alert(`✅ Login successful! Welcome ${validUser.fullName}\n\n🎭 Role: ${validUser.role}\n📧 Email: ${dummyUser.email}`)
-        console.log('Admin logged in:', dummyUser)
+        console.log('Admin logged in:', admin)
         
         // Clear form
         setFormData({ username: '', password: '' })
+        
+        // Here you can redirect to admin dashboard
+        // window.location.href = '/admin/dashboard'
       } else {
-        setError('Invalid username or password. Please check your credentials.')
+        setError(response.data.message || 'Login failed')
       }
       
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.')
+      console.error('Login error:', err)
+      
+      // Handle specific error responses
+      if (err.response?.data?.message) {
+        setError(err.response.data.message)
+      } else if (err.response?.status === 401) {
+        setError('Invalid username or password. Please check your credentials.')
+      } else if (err.response?.status === 423) {
+        setError('Account is temporarily locked due to multiple failed login attempts. Please try again later.')
+      } else if (err.code === 'ERR_NETWORK') {
+        setError('Unable to connect to server. Please ensure the server is running and try again.')
+      } else {
+        setError('An unexpected error occurred. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -206,37 +205,6 @@ const AdminLogin = () => {
                       </>
                     )}
                   </motion.button>
-
-                  {/* Demo Credentials */}
-                  <div className="text-center text-sm text-gray-500 border-t pt-6">
-                    <p className="mb-2 font-semibold">Available Test Credentials:</p>
-                    <div className="space-y-2 text-xs">
-                      <div className="bg-gray-100 p-3 rounded grid grid-cols-2 gap-2">
-                        <div>
-                          <p className="font-mono"><strong>admin</strong> / admin123</p>
-                          <p className="text-gray-600">System Administrator</p>
-                        </div>
-                        <div>
-                          <p className="font-mono"><strong>hod</strong> / hod123</p>
-                          <p className="text-gray-600">HOD Computer Science</p>
-                        </div>
-                      </div>
-                      <div className="bg-gray-100 p-3 rounded grid grid-cols-2 gap-2">
-                        <div>
-                          <p className="font-mono"><strong>faculty</strong> / faculty123</p>
-                          <p className="text-gray-600">Faculty Member</p>
-                        </div>
-                        <div>
-                          <p className="font-mono"><strong>coordinator</strong> / coord123</p>
-                          <p className="text-gray-600">Program Coordinator</p>
-                        </div>
-                      </div>
-                      <div className="bg-gray-100 p-2 rounded">
-                        <p className="font-mono"><strong>assistant</strong> / assist123</p>
-                        <p className="text-gray-600">Administrative Assistant</p>
-                      </div>
-                    </div>
-                  </div>
                 </form>
               </motion.div>
             </AnimatedSection>
