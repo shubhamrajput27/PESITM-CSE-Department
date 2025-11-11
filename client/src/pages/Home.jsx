@@ -1,6 +1,8 @@
 ﻿import { Link } from 'react-router-dom'
 import { Code2, Users, Award, TrendingUp, ArrowRight, BookOpen, Cpu } from 'lucide-react'
 import AnimatedSection from '../components/AnimatedSection'
+import AnnouncementBanner from '../components/AnnouncementBanner'
+import NewsEventsSection from '../components/NewsEventsSection'
 import { motion } from 'framer-motion'
 
 const Home = () => {
@@ -31,8 +33,11 @@ const Home = () => {
 
   return (
     <div className="bg-white">
-  {/* Hero Section */}
-  <section className="relative bg-white text-pesitm-blue py-20 md:py-32">
+      {/* Announcement Banner */}
+      <AnnouncementBanner />
+      
+      {/* Hero Section */}
+      <section className="relative bg-white text-pesitm-blue py-20 md:py-32">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -123,8 +128,11 @@ const Home = () => {
         </div>
       </section>
 
+      {/* News & Events Section */}
+      <NewsEventsSection />
+
       {/* Quick Links Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="container-custom">
           <AnimatedSection>
             <h2 className="section-heading text-center mb-12">Explore More</h2>

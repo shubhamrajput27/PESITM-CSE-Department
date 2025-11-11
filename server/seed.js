@@ -67,28 +67,85 @@ const seedData = async () => {
     // Seed Events
     const eventsData = [
       {
-        title: 'National Level Technical Symposium - TECHNOVATE 2024',
-        description: 'Annual technical fest featuring coding competitions, hackathons, paper presentations, and tech talks by industry experts.',
-        date: new Date('2024-12-15'),
-        venue: 'PESITM Main Auditorium',
-        category: 'Technical Fest',
-        image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800'
-      },
-      {
-        title: 'Workshop on Machine Learning and AI',
-        description: 'Two-day hands-on workshop covering fundamentals of ML, neural networks, and practical implementation using Python.',
-        date: new Date('2024-11-20'),
-        venue: 'AI/ML Lab',
+        title: 'Latest Updates',
+        description: 'Check out the newest developments and announcements from the CSE Department including NBA accreditation, new faculty appointments, and upcoming initiatives.',
+        date: new Date('2025-11-15'),
+        venue: 'CSE Department',
         category: 'Workshop',
-        image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800'
+        image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800',
+        status: 'upcoming'
       },
       {
-        title: 'CodeSprint - 24 Hour Hackathon',
-        description: 'Intense 24-hour coding marathon where teams build innovative solutions to real-world problems.',
-        date: new Date('2024-12-01'),
-        venue: 'CSE Department Labs',
+        title: 'PES Inaugy Hackathon, Shivamogga - Computer Science & Engineering',
+        description: 'Annual hackathon event showcasing innovative projects and solutions by students. Register now to participate in various coding challenges and win exciting prizes.',
+        date: new Date('2025-11-20'),
+        venue: 'PESITM Campus',
         category: 'Hackathon',
-        image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800'
+        image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800',
+        status: 'upcoming'
+      },
+      {
+        title: 'Summer Internship Program 2025',
+        description: 'Applications open for summer internship opportunities with leading tech companies. Gain hands-on experience in cutting-edge technologies and industry best practices.',
+        date: new Date('2025-12-01'),
+        venue: 'Industry Partners',
+        category: 'Seminar',
+        image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
+        status: 'upcoming'
+      },
+      {
+        title: 'Semester Tech Talks - IEEE Computer Society 2025',
+        description: 'Weekly technical talks by industry experts and researchers covering latest trends in AI, Machine Learning, Cybersecurity, and Cloud Computing.',
+        date: new Date('2025-11-25'),
+        venue: 'Main Auditorium',
+        category: 'Seminar Series',
+        image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800',
+        status: 'upcoming'
+      },
+      {
+        title: 'Ethnic Days - 9th November 2025',
+        description: 'Cultural celebration showcasing diversity and tradition. Students showcase their cultural heritage through traditional attire, performances, and food.',
+        date: new Date('2025-11-09'),
+        venue: 'College Grounds',
+        category: 'Guest Lecture',
+        image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800',
+        status: 'completed'
+      },
+      {
+        title: 'College Competition, Organized by Computing Society',
+        description: 'Inter-college coding competition and technical challenges. Compete with students from various colleges and showcase your programming skills.',
+        date: new Date('2025-11-30'),
+        venue: 'CSE Labs',
+        category: 'Workshop',
+        image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800',
+        status: 'upcoming'
+      },
+      {
+        title: 'CHAMPIONSHIP 2025-26 - 1st to 4th Year Students',
+        description: 'Annual championship event for students across all years. Multiple categories including coding, project exhibition, and technical quiz competitions.',
+        date: new Date('2025-12-10'),
+        venue: 'Sports Complex',
+        category: 'Technical Fest',
+        image: 'https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=800',
+        status: 'upcoming'
+      },
+      {
+        title: 'ROBOTICS WORKSHOP ON REAL MODEL - IEEE Student Branch',
+        description: 'Hands-on robotics workshop where students learn to build and program real robots. Expert guidance from IEEE members and industry professionals.',
+        date: new Date('2025-11-28'),
+        venue: 'Robotics Lab',
+        category: 'Workshop',
+        image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800',
+        status: 'upcoming'
+      },
+      {
+        title: 'Student Leadership Development Program',
+        description: 'Leadership training program designed to develop management and soft skills among students. Guest speakers from corporate world share their experiences.',
+        date: new Date('2025-12-05'),
+        venue: 'Conference Hall',
+        category: 'Guest Lecture',
+        image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800',
+        status: 'upcoming'
       }
     ]
 

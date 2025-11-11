@@ -19,6 +19,9 @@ export default {
           800: '#1e40af',
           900: '#1e3a8a',
         },
+        navy: {
+          900: '#0D345F',
+        },
         pesitm: {
           blue: '#003366',
           gold: '#FFB81C',
