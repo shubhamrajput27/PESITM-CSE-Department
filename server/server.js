@@ -5,6 +5,8 @@ import { testConnection } from './config/database.js'
 
 // Import routes
 import adminAuthRoutes from './routes/adminAuthPostgresRoutes.js'
+import studentAuthRoutes from './routes/studentAuthRoutes.js'
+import facultyAuthRoutes from './routes/facultyAuthRoutes.js'
 import newsRoutes from './routes/newsRoutes.js'
 import notificationRoutes from './routes/notificationRoutes.js'
 import facultyPostgresRoutes from './routes/facultyPostgresRoutes.js'
@@ -32,6 +34,8 @@ connectDatabases()
 
 // Routes
 app.use('/api/admin', adminAuthRoutes)
+app.use('/api/student', studentAuthRoutes)
+app.use('/api/faculty-auth', facultyAuthRoutes)
 app.use('/api/news', newsRoutes)
 app.use('/api/notifications', notificationRoutes)
 app.use('/api/faculty', facultyPostgresRoutes)
@@ -47,11 +51,21 @@ app.get('/', (req, res) => {
     database: 'PostgreSQL',
     activeEndpoints: {
       admin: '/api/admin',
+<<<<<<< HEAD
       faculty: '/api/faculty',
       events: '/api/events',
       research: '/api/research',
       news: '/api/news',
       notifications: '/api/notifications'
+=======
+      student: '/api/student',
+      faculty: '/api/faculty-auth',
+      news: '/api/news',
+      notifications: '/api/notifications',
+      facultyProfiles: '/api/faculty',
+      events: '/api/events',
+      research: '/api/research'
+>>>>>>> e80ac0961509fc5d033b991e09f19eb0417177d6
     }
   })
 })
