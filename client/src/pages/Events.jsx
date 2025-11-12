@@ -1,34 +1,106 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import AnimatedSection from '../components/AnimatedSection'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { Calendar, MapPin, Users } from 'lucide-react'
+import { Calendar, MapPin, Users, FileText } from 'lucide-react'
 
 const Events = () => {
+  const [searchParams] = useSearchParams()
   const [events, setEvents] = useState([])
+  const [news, setNews] = useState([])
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('events')
 
   useEffect(() => {
+    // Check URL parameter for tab
+    const tabParam = searchParams.get('tab')
+    if (tabParam === 'news') {
+      setActiveTab('news')
+    }
+    
     // Scroll to top when component mounts
     window.scrollTo(0, 0)
-    fetchEvents()
-  }, [])
+    fetchData()
+  }, [searchParams])
 
-  const fetchEvents = async () => {
+  const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/events')
-      if (response.data.success) {
-        setEvents(response.data.data)
+      // Fetch events
+      const eventsResponse = await axios.get('http://localhost:5000/api/events')
+      if (eventsResponse.data.success) {
+        setEvents(eventsResponse.data.data)
       } else {
         setEvents(placeholderEvents)
       }
+
+      // Fetch news
+      const newsResponse = await axios.get('http://localhost:5000/api/news')
+      if (newsResponse.data.success) {
+        setNews(newsResponse.data.data)
+      } else {
+        setNews(placeholderNews)
+      }
+      
       setLoading(false)
     } catch (error) {
-      console.error('Error fetching events:', error)
+      console.error('Error fetching data:', error)
       setEvents(placeholderEvents)
+      setNews(placeholderNews)
       setLoading(false)
     }
   }
+
+  const placeholderNews = [
+    {
+      id: '1',
+      title: 'Welcome to CSE Department Portal',
+      excerpt: 'New department portal launched with enhanced features for students and faculty',
+      category: 'announcement',
+      image_url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800',
+      published_at: '2024-11-10T10:00:00Z'
+    },
+    {
+      id: '2',
+      title: 'Research Collaboration with Industry',
+      excerpt: 'New partnerships established with leading tech companies for research projects',
+      category: 'research',
+      image_url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
+      published_at: '2024-11-08T14:30:00Z'
+    },
+    {
+      id: '3',
+      title: 'Student Achievements in National Competition',
+      excerpt: 'CSE students win first place in national level hackathon competition',
+      category: 'achievement',
+      image_url: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800',
+      published_at: '2024-11-05T16:45:00Z'
+    },
+    {
+      id: '4',
+      title: 'New Computer Lab with Advanced Infrastructure',
+      excerpt: 'State-of-the-art computer lab inaugurated with latest hardware and software',
+      category: 'announcement',
+      image_url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
+      published_at: '2024-11-03T09:00:00Z'
+    },
+    {
+      id: '5',
+      title: 'Faculty Publications in Top Journals',
+      excerpt: 'Department faculty members publish research papers in prestigious international journals',
+      category: 'research',
+      image_url: 'https://images.unsplash.com/photo-1532619187608-e5375cab36aa?w=800',
+      published_at: '2024-10-28T11:20:00Z'
+    },
+    {
+      id: '6',
+      title: 'Placement Drive: 150+ Students Placed',
+      excerpt: 'Record placement season with students securing positions in top tech companies',
+      category: 'achievement',
+      image_url: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800',
+      published_at: '2024-10-25T15:30:00Z'
+    }
+  ]
 
   const placeholderEvents = [
     {
@@ -98,59 +170,128 @@ const Events = () => {
       <section className="bg-gradient-to-r from-pesitm-blue to-blue-900 text-white py-16">
         <div className="container-custom">
           <AnimatedSection>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Events & News</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">News & Events</h1>
             <p className="text-xl text-gray-200">Stay updated with latest happenings</p>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Events Grid */}
+      {/* Tab Navigation */}
+      <section className="bg-white py-8 border-b">
+        <div className="container-custom">
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() => setActiveTab('events')}
+              className={`px-8 py-3 border-2 font-semibold rounded-lg transition flex items-center space-x-2 ${
+                activeTab === 'events'
+                  ? 'bg-pesitm-blue text-white border-pesitm-blue'
+                  : 'border-pesitm-blue text-pesitm-blue hover:bg-pesitm-blue hover:text-white'
+              }`}
+            >
+              <Calendar size={20} />
+              <span>Upcoming Events</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('news')}
+              className={`px-8 py-3 border-2 font-semibold rounded-lg transition flex items-center space-x-2 ${
+                activeTab === 'news'
+                  ? 'bg-pesitm-blue text-white border-pesitm-blue'
+                  : 'border-pesitm-blue text-pesitm-blue hover:bg-pesitm-blue hover:text-white'
+              }`}
+            >
+              <FileText size={20} />
+              <span>Latest News</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Events/News Grid */}
       <section className="py-16">
         <div className="container-custom">
           {loading ? (
             <LoadingSpinner />
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {events.map((event, index) => (
-                <AnimatedSection key={event._id} delay={index * 0.1}>
-                  <div className="card overflow-hidden p-0 hover:scale-105 transition-transform">
-                    <div className="h-48 overflow-hidden">
-                      <img
-                        src={event.image}
-                        alt={event.title}
-                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <div className="inline-block px-3 py-1 bg-pesitm-gold text-pesitm-blue text-xs font-semibold rounded-full mb-3">
-                        {event.category}
+              {activeTab === 'events' ? (
+                events.map((event, index) => (
+                  <AnimatedSection key={event._id} delay={index * 0.1}>
+                    <div className="card overflow-hidden p-0 hover:scale-105 transition-transform">
+                      <div className="h-48 overflow-hidden">
+                        <img
+                          src={event.image}
+                          alt={event.title}
+                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                        />
                       </div>
-                      <h3 className="text-xl font-bold text-pesitm-blue mb-3 line-clamp-2">
-                        {event.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-3">
-                        {event.description}
-                      </p>
-                      <div className="space-y-2 text-sm text-gray-500">
-                        <div className="flex items-center space-x-2">
-                          <Calendar size={16} className="text-pesitm-blue" />
-                          <span>{formatDate(event.date)}</span>
+                      <div className="p-6">
+                        <div className="inline-block px-3 py-1 bg-pesitm-gold text-pesitm-blue text-xs font-semibold rounded-full mb-3">
+                          {event.category}
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <MapPin size={16} className="text-pesitm-blue" />
-                          <span>{event.venue}</span>
+                        <h3 className="text-xl font-bold text-pesitm-blue mb-3 line-clamp-2">
+                          {event.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-3">
+                          {event.description}
+                        </p>
+                        <div className="space-y-2 text-sm text-gray-500">
+                          <div className="flex items-center space-x-2">
+                            <Calendar size={16} className="text-pesitm-blue" />
+                            <span>{formatDate(event.date)}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <MapPin size={16} className="text-pesitm-blue" />
+                            <span>{event.venue}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </AnimatedSection>
-              ))}
+                  </AnimatedSection>
+                ))
+              ) : (
+                news.map((newsItem, index) => (
+                  <AnimatedSection key={newsItem.id} delay={index * 0.1}>
+                    <div className="card overflow-hidden p-0 hover:scale-105 transition-transform">
+                      <div className="h-48 overflow-hidden">
+                        <img
+                          src={newsItem.image_url}
+                          alt={newsItem.title}
+                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <div className="inline-block px-3 py-1 bg-pesitm-blue text-white text-xs font-semibold rounded-full mb-3">
+                          {newsItem.category?.charAt(0).toUpperCase() + newsItem.category?.slice(1)}
+                        </div>
+                        <h3 className="text-xl font-bold text-pesitm-blue mb-3 line-clamp-2">
+                          {newsItem.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-3">
+                          {newsItem.excerpt}
+                        </p>
+                        <div className="space-y-2 text-sm text-gray-500">
+                          <div className="flex items-center space-x-2">
+                            <FileText size={16} className="text-pesitm-blue" />
+                            <span>{formatDate(newsItem.published_at)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </AnimatedSection>
+                ))
+              )}
             </div>
           )}
 
-          {!loading && events.length === 0 && (
+          {!loading && activeTab === 'events' && events.length === 0 && (
             <div className="text-center py-12">
               <p className="text-xl text-gray-600">No upcoming events at the moment.</p>
+            </div>
+          )}
+
+          {!loading && activeTab === 'news' && news.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-xl text-gray-600">No news articles at the moment.</p>
             </div>
           )}
         </div>
