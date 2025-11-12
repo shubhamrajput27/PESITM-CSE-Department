@@ -51,21 +51,13 @@ app.get('/', (req, res) => {
     database: 'PostgreSQL',
     activeEndpoints: {
       admin: '/api/admin',
-<<<<<<< HEAD
+      student: '/api/student',
+      facultyAuth: '/api/faculty-auth',
       faculty: '/api/faculty',
       events: '/api/events',
       research: '/api/research',
       news: '/api/news',
       notifications: '/api/notifications'
-=======
-      student: '/api/student',
-      faculty: '/api/faculty-auth',
-      news: '/api/news',
-      notifications: '/api/notifications',
-      facultyProfiles: '/api/faculty',
-      events: '/api/events',
-      research: '/api/research'
->>>>>>> e80ac0961509fc5d033b991e09f19eb0417177d6
     }
   })
 })

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Calendar, MapPin, ArrowRight, FileText } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import AnimatedSection from './AnimatedSection'
@@ -9,6 +9,7 @@ const NewsEventsSection = () => {
   const [news, setNews] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('events')
+  const scrollContainerRef = useRef(null)
 
   // Fetch events and news from API
   useEffect(() => {
@@ -36,6 +37,57 @@ const NewsEventsSection = () => {
     }
     fetchData()
   }, [])
+
+  // Auto-scroll effect for horizontal scrolling
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    let scrollInterval
+    let scrollDirection = 1 // 1 for right, -1 for left
+    let isPaused = false
+
+    const startAutoScroll = () => {
+      scrollInterval = setInterval(() => {
+        if (!isPaused && scrollContainer) {
+          const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth
+          const currentScroll = scrollContainer.scrollLeft
+
+          // Change direction at the ends
+          if (currentScroll >= maxScroll) {
+            scrollDirection = -1
+          } else if (currentScroll <= 0) {
+            scrollDirection = 1
+          }
+
+          // Scroll smoothly
+          scrollContainer.scrollLeft += scrollDirection * 2
+        }
+      }, 30)
+    }
+
+    // Pause on hover
+    const handleMouseEnter = () => {
+      isPaused = true
+    }
+
+    const handleMouseLeave = () => {
+      isPaused = false
+    }
+
+    scrollContainer.addEventListener('mouseenter', handleMouseEnter)
+    scrollContainer.addEventListener('mouseleave', handleMouseLeave)
+
+    startAutoScroll()
+
+    return () => {
+      clearInterval(scrollInterval)
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('mouseenter', handleMouseEnter)
+        scrollContainer.removeEventListener('mouseleave', handleMouseLeave)
+      }
+    }
+  }, [loading, activeTab])
 
   // Sample events data as fallback
   const sampleEvents = [
@@ -65,6 +117,42 @@ const NewsEventsSection = () => {
       venue: 'Conference Hall',
       image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
       category: 'Workshop'
+    },
+    {
+      _id: '4',
+      title: 'Guest Lecture on Cloud Computing',
+      description: 'Expert speaker from AWS to discuss cloud architecture and best practices',
+      date: new Date('2025-11-25'),
+      venue: 'Seminar Hall',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800',
+      category: 'Guest Lecture'
+    },
+    {
+      _id: '5',
+      title: 'Project Expo 2025',
+      description: 'Annual exhibition of student projects across various domains of computer science',
+      date: new Date('2025-12-05'),
+      venue: 'Exhibition Hall',
+      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800',
+      category: 'Exhibition'
+    },
+    {
+      _id: '6',
+      title: 'Coding Competition - CodeWars',
+      description: 'Inter-college coding competition with exciting prizes and challenges',
+      date: new Date('2025-12-10'),
+      venue: 'Computer Lab 2',
+      image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
+      category: 'Competition'
+    },
+    {
+      _id: '7',
+      title: 'Cybersecurity Awareness Week',
+      description: 'Week-long program on cybersecurity threats and defense mechanisms',
+      date: new Date('2025-12-15'),
+      venue: 'Multiple Venues',
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800',
+      category: 'Workshop'
     }
   ]
 
@@ -93,6 +181,38 @@ const NewsEventsSection = () => {
       category: 'achievement',
       image_url: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800',
       published_at: '2024-11-05T16:45:00Z'
+    },
+    {
+      id: 4,
+      title: 'New Computer Lab with Advanced Infrastructure',
+      excerpt: 'State-of-the-art computer lab inaugurated with latest hardware and software',
+      category: 'announcement',
+      image_url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
+      published_at: '2024-11-03T09:00:00Z'
+    },
+    {
+      id: 5,
+      title: 'Faculty Publications in Top Journals',
+      excerpt: 'Department faculty members publish research papers in prestigious international journals',
+      category: 'research',
+      image_url: 'https://images.unsplash.com/photo-1532619187608-e5375cab36aa?w=800',
+      published_at: '2024-10-28T11:20:00Z'
+    },
+    {
+      id: 6,
+      title: 'Placement Drive: 150+ Students Placed',
+      excerpt: 'Record placement season with students securing positions in top tech companies',
+      category: 'achievement',
+      image_url: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800',
+      published_at: '2024-10-25T15:30:00Z'
+    },
+    {
+      id: 7,
+      title: 'Department Hosts National Conference',
+      excerpt: 'Successfully organized national conference on emerging technologies in computing',
+      category: 'announcement',
+      image_url: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800',
+      published_at: '2024-10-20T13:45:00Z'
     }
   ]
 
@@ -218,26 +338,39 @@ const NewsEventsSection = () => {
           </div>
         </AnimatedSection>
 
-        {/* Content Grid */}
+        {/* Content - Horizontal Scroll */}
         {loading ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pesitm-blue"></div>
             <p className="mt-4 text-gray-600">Loading content...</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {activeTab === 'news' 
-              ? news.map((newsItem, index) => (
-                  <AnimatedSection key={newsItem.id || index} delay={index * 0.1}>
-                    {renderNewsCard(newsItem, index)}
-                  </AnimatedSection>
-                ))
-              : events.map((event, index) => (
-                  <AnimatedSection key={event._id || event.id || index} delay={index * 0.1}>
-                    {renderEventCard(event, index)}
-                  </AnimatedSection>
-                ))
-            }
+          <div className="relative">
+            {/* Horizontal Scrollable Container with Auto-Scroll */}
+            <div 
+              ref={scrollContainerRef}
+              className="overflow-x-auto pb-4 scrollbar-hide"
+              style={{ scrollBehavior: 'smooth' }}
+            >
+              <div className="flex gap-6 px-2" style={{ minWidth: 'max-content' }}>
+                {activeTab === 'news' 
+                  ? news.map((newsItem, index) => (
+                      <AnimatedSection key={newsItem.id || index} delay={index * 0.1}>
+                        <div style={{ width: '350px', flexShrink: 0 }}>
+                          {renderNewsCard(newsItem, index)}
+                        </div>
+                      </AnimatedSection>
+                    ))
+                  : events.map((event, index) => (
+                      <AnimatedSection key={event._id || event.id || index} delay={index * 0.1}>
+                        <div style={{ width: '350px', flexShrink: 0 }}>
+                          {renderEventCard(event, index)}
+                        </div>
+                      </AnimatedSection>
+                    ))
+                }
+              </div>
+            </div>
           </div>
         )}
 
