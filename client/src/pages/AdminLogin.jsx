@@ -40,15 +40,13 @@ const AdminLogin = () => {
         localStorage.setItem('adminUser', JSON.stringify(response.data.data.admin))
         
         const admin = response.data.data.admin
-        alert(`✅ Login Successful!\n\nWelcome ${admin.full_name}\n🎭 Role: ${admin.role}\n📧 Email: ${admin.email}\n\n🔒 Secure PostgreSQL Authentication`)
-        
         console.log('Admin logged in:', admin)
         
         // Clear form
         setFormData({ username: '', password: '' })
         
-        // Here you can redirect to admin dashboard
-        // window.location.href = '/admin/dashboard'
+        // Redirect to admin dashboard
+        window.location.href = '/admin/dashboard'
       } else {
         setError(response.data.message || 'Login failed')
       }

@@ -12,6 +12,11 @@ import { testConnection } from './config/database.js'
 
 // PostgreSQL-based routes (active)
 import adminAuthRoutes from './routes/adminAuthPostgresRoutes.js'
+import newsRoutes from './routes/newsRoutes.js'
+import notificationRoutes from './routes/notificationRoutes.js'
+import facultyPostgresRoutes from './routes/facultyPostgresRoutes.js'
+import eventsPostgresRoutes from './routes/eventsPostgresRoutes.js'
+import researchPostgresRoutes from './routes/researchPostgresRoutes.js'
 
 // Load environment variables
 dotenv.config()
@@ -41,6 +46,11 @@ connectDatabases()
 
 // PostgreSQL-based routes (active)
 app.use('/api/admin', adminAuthRoutes)
+app.use('/api/news', newsRoutes)
+app.use('/api/notifications', notificationRoutes)
+app.use('/api/faculty', facultyPostgresRoutes)
+app.use('/api/events', eventsPostgresRoutes)
+app.use('/api/research', researchPostgresRoutes)
 
 // Root route
 app.get('/', (req, res) => {

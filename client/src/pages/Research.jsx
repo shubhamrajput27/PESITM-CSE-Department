@@ -14,8 +14,12 @@ const Research = () => {
 
   const fetchResearch = async () => {
     try {
-      const response = await axios.get('/api/research')
-      setResearch(response.data)
+      const response = await axios.get('http://localhost:5000/api/research')
+      if (response.data.success) {
+        setResearch(response.data.data)
+      } else {
+        setResearch(placeholderResearch)
+      }
       setLoading(false)
     } catch (error) {
       console.error('Error fetching research:', error)

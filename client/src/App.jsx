@@ -9,6 +9,7 @@ import Events from './pages/Events'
 import Achievements from './pages/Achievements'
 import Contact from './pages/Contact'
 import AdminLogin from './pages/AdminLogin'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/achievements" element={<Achievements />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>
         </main>
         <Footer />

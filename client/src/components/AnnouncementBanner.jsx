@@ -1,14 +1,37 @@
 import { Megaphone } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const AnnouncementBanner = () => {
-  const announcements = [
+  const [announcements, setAnnouncements] = useState([
     "Latest Updates",
     "Counselling on 10th August 2025",
     "Join us for Open Day-8th November 2025",
     "NBA Accreditation received for 2024-2027",
     "New Industry Collaboration with leading Tech Companies"
-  ]
+  ])
+
+  // Fetch banner notifications from API
+  useEffect(() => {
+    const fetchBannerNotifications = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/notifications/banner')
+        if (response.data.success && response.data.data.length > 0) {
+          const bannerNotifications = response.data.data.map(notification => notification.title)
+          setAnnouncements(bannerNotifications)
+        }
+      } catch (error) {
+        console.error('Error fetching banner notifications:', error)
+        // Keep default announcements if API fails
+      }
+    }
+
+    fetchBannerNotifications()
+    
+    // Poll for updates every 10 seconds for real-time updates
+    const interval = setInterval(fetchBannerNotifications, 10000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="bg-white border-b border-gray-200 overflow-hidden">

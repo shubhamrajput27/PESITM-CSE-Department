@@ -155,8 +155,12 @@ const Faculty = () => {
 
   const fetchFaculty = async () => {
     try {
-      const response = await axios.get('/api/faculty')
-      setFaculty(response.data)
+      const response = await axios.get('http://localhost:5000/api/faculty')
+      if (response.data.success) {
+        setFaculty(response.data.data)
+      } else {
+        setFaculty(placeholderFaculty)
+      }
       setLoading(false)
     } catch (error) {
       console.error('Error fetching faculty:', error)

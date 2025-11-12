@@ -112,3 +112,188 @@ WHERE is_active = TRUE;
 -- Grant permissions (adjust as needed)
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO your_app_user;
 -- GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO your_app_user;
+
+-- Create news/announcements table
+CREATE TABLE IF NOT EXISTS news (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    content TEXT NOT NULL,
+    excerpt VARCHAR(500),
+    category VARCHAR(50) DEFAULT 'general',
+    image_url VARCHAR(500),
+    is_featured BOOLEAN DEFAULT FALSE,
+    is_published BOOLEAN DEFAULT TRUE,
+    display_order INTEGER DEFAULT 0,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    author_id INTEGER REFERENCES admin_users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes for news
+CREATE INDEX IF NOT EXISTS idx_news_published ON news(is_published);
+CREATE INDEX IF NOT EXISTS idx_news_featured ON news(is_featured);
+CREATE INDEX IF NOT EXISTS idx_news_category ON news(category);
+CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at);
+
+-- Create notifications table
+CREATE TABLE IF NOT EXISTS notifications (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    message TEXT NOT NULL,
+    type VARCHAR(50) DEFAULT 'info',
+    priority VARCHAR(20) DEFAULT 'normal',
+    is_active BOOLEAN DEFAULT TRUE,
+    show_banner BOOLEAN DEFAULT FALSE,
+    display_order INTEGER DEFAULT 0,
+    expires_at TIMESTAMP,
+    author_id INTEGER REFERENCES admin_users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes for notifications
+CREATE INDEX IF NOT EXISTS idx_notifications_active ON notifications(is_active);
+CREATE INDEX IF NOT EXISTS idx_notifications_banner ON notifications(show_banner);
+CREATE INDEX IF NOT EXISTS idx_notifications_expires_at ON notifications(expires_at);
+CREATE INDEX IF NOT EXISTS idx_notifications_type ON notifications(type);
+
+-- Create trigger for news table
+CREATE TRIGGER update_news_updated_at 
+    BEFORE UPDATE ON news 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Create trigger for notifications table
+CREATE TRIGGER update_notifications_updated_at 
+    BEFORE UPDATE ON notifications 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Insert sample news
+INSERT INTO news (title, content, excerpt, category, is_featured, author_id) VALUES
+('Welcome to CSE Department Portal', 'We are excited to launch our new department portal with enhanced features for students, faculty, and visitors.', 'New department portal launched with enhanced features', 'announcement', TRUE, 1),
+('Research Collaboration with Industry', 'Our department has partnered with leading tech companies for collaborative research projects in AI and Machine Learning.', 'New industry partnerships for research collaboration', 'research', FALSE, 1),
+('Student Achievements in Hackathon', 'Our students secured first place in the national level hackathon competition held at IIT Delhi.', 'Students win national hackathon competition', 'achievement', TRUE, 1)
+ON CONFLICT DO NOTHING;
+
+-- Insert sample notifications
+INSERT INTO notifications (title, message, type, priority, show_banner, author_id) VALUES
+('Admission Open for 2024-25', 'Applications are now open for B.Tech and M.Tech programs. Visit admissions office for details.', 'info', 'high', TRUE, 1),
+('Workshop on AI and ML', 'Join us for a 3-day workshop on Artificial Intelligence and Machine Learning. Registration required.', 'event', 'normal', FALSE, 1),
+('Library Timing Update', 'Please note that library timings have been extended till 10 PM from Monday to Friday.', 'info', 'low', FALSE, 1)
+ON CONFLICT DO NOTHING;
+
+-- Create events table
+CREATE TABLE IF NOT EXISTS events (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL,
+    date TIMESTAMP NOT NULL,
+    venue VARCHAR(200),
+    category VARCHAR(50) DEFAULT 'workshop',
+    organizer VARCHAR(100),
+    image_url VARCHAR(500),
+    attendees INTEGER DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'upcoming',
+    is_featured BOOLEAN DEFAULT FALSE,
+    display_order INTEGER DEFAULT 0,
+    author_id INTEGER REFERENCES admin_users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes for events
+CREATE INDEX IF NOT EXISTS idx_events_date ON events(date);
+CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
+CREATE INDEX IF NOT EXISTS idx_events_featured ON events(is_featured);
+CREATE INDEX IF NOT EXISTS idx_events_category ON events(category);
+CREATE INDEX IF NOT EXISTS idx_events_display_order ON events(display_order);
+
+-- Create faculty table
+CREATE TABLE IF NOT EXISTS faculty (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    designation VARCHAR(100) NOT NULL,
+    specialization VARCHAR(200),
+    email VARCHAR(100),
+    qualification VARCHAR(200),
+    experience VARCHAR(50),
+    image_url VARCHAR(500),
+    bio TEXT,
+    research_interests TEXT,
+    publications TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    display_order INTEGER DEFAULT 0,
+    author_id INTEGER REFERENCES admin_users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes for faculty
+CREATE INDEX IF NOT EXISTS idx_faculty_active ON faculty(is_active);
+CREATE INDEX IF NOT EXISTS idx_faculty_designation ON faculty(designation);
+CREATE INDEX IF NOT EXISTS idx_faculty_display_order ON faculty(display_order);
+
+-- Create research table
+CREATE TABLE IF NOT EXISTS research (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL,
+    area VARCHAR(100),
+    faculty_lead VARCHAR(100),
+    funding_agency VARCHAR(200),
+    funding_amount DECIMAL(15,2),
+    start_date DATE,
+    end_date DATE,
+    status VARCHAR(20) DEFAULT 'ongoing',
+    publications TEXT,
+    image_url VARCHAR(500),
+    display_order INTEGER DEFAULT 0,
+    author_id INTEGER REFERENCES admin_users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes for research
+CREATE INDEX IF NOT EXISTS idx_research_area ON research(area);
+CREATE INDEX IF NOT EXISTS idx_research_status ON research(status);
+CREATE INDEX IF NOT EXISTS idx_research_display_order ON research(display_order);
+
+-- Create triggers for all tables
+CREATE TRIGGER update_events_updated_at 
+    BEFORE UPDATE ON events 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_faculty_updated_at 
+    BEFORE UPDATE ON faculty 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_research_updated_at 
+    BEFORE UPDATE ON research 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Insert sample events
+INSERT INTO events (title, description, date, venue, category, organizer, display_order, author_id) VALUES
+('AI & ML Workshop', 'Comprehensive workshop on Artificial Intelligence and Machine Learning fundamentals', '2024-12-15 10:00:00', 'CSE Lab 1', 'Workshop', 'Dr. Priya Sharma', 1, 1),
+('Tech Talk: Future of Computing', 'Guest lecture by industry expert on emerging technologies', '2024-12-20 14:00:00', 'Main Auditorium', 'Guest Lecture', 'CSE Department', 2, 1),
+('CodeFest 2024', 'Annual coding competition for students', '2024-11-05 09:00:00', 'Computer Lab', 'Hackathon', 'Student Council', 3, 1)
+ON CONFLICT DO NOTHING;
+
+-- Insert sample faculty
+INSERT INTO faculty (name, designation, specialization, email, qualification, experience, display_order, author_id) VALUES
+('Dr. Prasanna Kumar H R', 'Professor and Head', 'Computer Science & Engineering', 'hodcse@pestrust.edu.in', 'Ph.D, M.Tech', '26 years', 1, 1),
+('Dr. Manu A P', 'Professor', 'Computer Science & Engineering', 'manu.ap@pestrust.edu.in', 'Ph.D, M.Tech', '20 years', 2, 1),
+('Dr. Chethan L S', 'Professor', 'Computer Science & Engineering', 'chethan.ls@pestrust.edu.in', 'Ph.D, M.Tech', '18 years', 3, 1),
+('Mr. Raghavendra K', 'Assistant Professor', 'Computer Science & Engineering', 'raghavendra.k@pestrust.edu.in', 'M.Tech', '12 years', 4, 1)
+ON CONFLICT DO NOTHING;
+
+-- Insert sample research projects
+INSERT INTO research (title, description, area, faculty_lead, status, display_order, author_id) VALUES
+('AI-based Healthcare System', 'Development of intelligent healthcare monitoring system using machine learning', 'Artificial Intelligence', 'Dr. Priya Sharma', 'ongoing', 1, 1),
+('IoT Security Framework', 'Research on securing Internet of Things devices and networks', 'Cybersecurity', 'Dr. Amit Verma', 'ongoing', 2, 1),
+('Blockchain in Education', 'Implementation of blockchain technology for secure academic records', 'Blockchain', 'Dr. Manu A P', 'completed', 3, 1)
+ON CONFLICT DO NOTHING;

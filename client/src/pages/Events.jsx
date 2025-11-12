@@ -14,8 +14,12 @@ const Events = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('/api/events')
-      setEvents(response.data)
+      const response = await axios.get('http://localhost:5000/api/events')
+      if (response.data.success) {
+        setEvents(response.data.data)
+      } else {
+        setEvents(placeholderEvents)
+      }
       setLoading(false)
     } catch (error) {
       console.error('Error fetching events:', error)
