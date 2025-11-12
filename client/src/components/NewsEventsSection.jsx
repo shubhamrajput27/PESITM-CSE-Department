@@ -26,6 +26,7 @@ const NewsEventsSection = () => {
           setNews(newsResponse.data.data.slice(0, 6))
         }
       } catch (error) {
+        console.error('Error fetching data:', error)
         // Fallback to sample data if API fails
         setEvents(sampleEvents)
         setNews(sampleNews)
@@ -188,9 +189,9 @@ const NewsEventsSection = () => {
             Latest News & Events
           </h2>
           
-          {/* Button Navigation */}
+          {/* Tab Navigation */}
           <div className="flex justify-center mb-12">
-            <div className="flex flex-wrap gap-4">
+            <div className="flex gap-4">
               <button
                 onClick={() => setActiveTab('news')}
                 className={`px-6 py-3 border-2 font-semibold rounded-lg transition flex items-center space-x-2 ${
