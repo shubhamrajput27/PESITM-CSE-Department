@@ -29,7 +29,7 @@ const AdminLogin = () => {
 
     try {
       // Real API call to PostgreSQL backend
-      const response = await axios.post('/api/admin/login', {
+      const response = await axios.post('http://localhost:5000/api/admin/login', {
         username: formData.username,
         password: formData.password
       })

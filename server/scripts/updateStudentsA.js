@@ -72,6 +72,38 @@ const studentsData = [
   { usn: '4PM24CS402', name: 'CHETHAN K C' }
 ];
 
+// Function to generate ID from USN
+function generateIdFromUSN(usn) {
+  // Extract year and number from USN format: 4PM23CS001 or 4PM24CS400
+  const match = usn.match(/4PM(\d{2})CS(\d+)/);
+  if (!match) {
+    console.error(`❌ Invalid USN format: ${usn}`);
+    return null;
+  }
+  
+  const year = match[1]; // 23 or 24
+  const number = parseInt(match[2]); // 001, 067, 400, 403, etc.
+  
+  // ID generation logic:
+  // - 4PM23CS001-126 -> ID: 1-126 (direct mapping)
+  // - 4PM24CS400-402 -> ID: 136-138 (start after existing 4PM24CS403-411 which are 127-135)
+  // - 4PM24CS403-411 -> ID: 127-135 (already in B section)
+  if (year === '23') {
+    return number; // Direct number: 4PM23CS001 -> ID: 1
+  } else if (year === '24') {
+    if (number >= 403) {
+      // B section: 4PM24CS403-411
+      return 127 + (number - 403); // 403->127, 404->128, ..., 411->135
+    } else if (number >= 400 && number <= 402) {
+      // A section: 4PM24CS400-402
+      return 136 + (number - 400); // 400->136, 401->137, 402->138
+    }
+  }
+  
+  console.error(`❌ Unsupported year/number in USN: ${usn}`);
+  return null;
+}
+
 async function updateStudentsA() {
   try {
     console.log('🔄 Starting students update for 5th Semester A Section...\n');
@@ -85,6 +117,13 @@ async function updateStudentsA() {
 
     for (const student of studentsData) {
       const { usn, name } = student;
+      
+      // Generate ID from USN
+      const id = generateIdFromUSN(usn);
+      if (id === null) {
+        console.error(`⚠️  Skipping student: ${name} (${usn}) - Invalid USN format`);
+        continue;
+      }
       
       // Generate student_id and email based on USN
       const student_id = usn.replace('4PM', '2023CSE');
@@ -108,17 +147,17 @@ async function updateStudentsA() {
         `;
         await pool.query(updateQuery, [email, name, 5, '3rd Year', 'CSE', usn]);
         updatedCount++;
-        console.log(`✅ Updated: ${name} (${usn})`);
+        console.log(`✅ Updated: ${name} (${usn}) - ID: ${id}`);
       } else {
-        // Insert new student
+        // Insert new student with explicit ID
         const insertQuery = `
           INSERT INTO students 
-          (student_id, usn, email, password_hash, full_name, semester, year, department) 
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+          (id, student_id, usn, email, password_hash, full_name, semester, year, department) 
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         `;
-        await pool.query(insertQuery, [student_id, usn, email, hashedPassword, name, 5, '3rd Year', 'CSE']);
+        await pool.query(insertQuery, [id, student_id, usn, email, hashedPassword, name, 5, '3rd Year', 'CSE']);
         createdCount++;
-        console.log(`✨ Created: ${name} (${usn})`);
+        console.log(`✨ Created: ${name} (${usn}) - ID: ${id}`);
       }
     }
 
