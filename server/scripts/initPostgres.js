@@ -41,9 +41,9 @@ const initializeDatabase = async () => {
       {
         username: 'admin',
         email: 'admin@pesitm.edu.in',
-        password: 'admin123',  // Back to original default password
+        password: 'admin123',  
         fullName: 'System Administrator',
-        role: 'super_admin'
+        role: 'Administrator'
       }
     ]
 
